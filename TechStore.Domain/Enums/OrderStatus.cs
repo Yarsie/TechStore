@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace TechStore.Domain.Enums
 {
-    internal class OrderStatus
+        public enum OrderStatus
     {
+        Pending,
+        Processing,
+        Shipped,
+        Delivered,
+        Cancelled,
+        PaymentFailed,
+        Paid,
     }
 }

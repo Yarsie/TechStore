@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TechStore.Domain.Enums
 {
-    internal class UserRole
+        public enum UserRole
     {
+        Customer,
+        Admin,
+        Manager
     }
 }
