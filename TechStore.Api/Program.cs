@@ -7,7 +7,10 @@ using TechStore.Infrastructure.Persistence;
 using TechStore.Application.Services;
 using TechStore.Infrastructure.Services;
 using TechStore.Application.Validators;
+using TechStore.Application.DTOs;
 using FluentValidation;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.ModelBuilder;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -86,8 +89,28 @@ try
 
     builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
     builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<ICategoryService, CategoryService>();
+    builder.Services.AddScoped<IUserService, UserService>();
 
     builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestDtoValidator>();
+    builder.Services.AddValidatorsFromAssemblyContaining<CreateProductDtoValidator>();
+
+    // OData configuration
+    var modelBuilder = new ODataConventionModelBuilder();
+    modelBuilder.EntitySet<ProductResponseDto>("Products");
+    modelBuilder.EntitySet<CategoryDto>("Categories");
+
+    builder.Services.AddControllers()
+        .AddOData(options => options
+            .Select()
+            .Filter()
+            .OrderBy()
+            .SkipToken()
+            .Count()
+            .Expand()
+            .SetMaxTop(100)
+            .AddRouteComponents("api", modelBuilder.GetEdmModel()));
 
     var app = builder.Build();
 
