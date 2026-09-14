@@ -9,14 +9,25 @@ namespace TechStore.Infrastructure.Services
     public class ProductService : IProductService
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICacheService _cacheService;
+        private readonly TimeSpan _cacheExpiration = TimeSpan.FromMinutes(10);
 
-        public ProductService(ApplicationDbContext context)
+        public ProductService(ApplicationDbContext context, ICacheService cacheService)
         {
             _context = context;
+            _cacheService = cacheService;
         }
 
         public async Task<ProductResponseDto> GetByIdAsync(Guid id)
         {
+            var cacheKey = $"products:{id}";
+            
+            var cachedProduct = await _cacheService.GetAsync<ProductResponseDto>(cacheKey);
+            if (cachedProduct != null)
+            {
+                return cachedProduct;
+            }
+
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -26,7 +37,10 @@ namespace TechStore.Infrastructure.Services
                 throw new KeyNotFoundException($"Product with ID {id} not found");
             }
 
-            return MapToProductResponseDto(product);
+            var productDto = MapToProductResponseDto(product);
+            await _cacheService.SetAsync(cacheKey, productDto, _cacheExpiration);
+
+            return productDto;
         }
 
         public async Task<IEnumerable<ProductResponseDto>> GetAllAsync()
@@ -105,6 +119,7 @@ namespace TechStore.Infrastructure.Services
             product.CategoryId = productDto.CategoryId;
 
             await _context.SaveChangesAsync();
+            await _cacheService.RemoveAsync($"products:{id}");
 
             return await GetByIdAsync(product.Id);
         }
@@ -119,6 +134,7 @@ namespace TechStore.Infrastructure.Services
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
+            await _cacheService.RemoveAsync($"products:{id}");
         }
 
         private static ProductResponseDto MapToProductResponseDto(Product product)
