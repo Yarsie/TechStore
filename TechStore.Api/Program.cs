@@ -11,6 +11,7 @@ using TechStore.Application.DTOs;
 using FluentValidation;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
+using StackExchange.Redis;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -64,6 +65,16 @@ try
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    {
+        var configuration = builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379";
+        var options = ConfigurationOptions.Parse(configuration);
+        options.AbortOnConnectFail = false;
+        return ConnectionMultiplexer.Connect(options);
+    });
+
+    builder.Services.AddScoped<ICacheService, CacheService>();
 
     var jwtSettings = builder.Configuration.GetSection("JwtSettings");
     var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey is not configured");
