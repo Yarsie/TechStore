@@ -103,9 +103,11 @@ try
     builder.Services.AddScoped<IProductService, ProductService>();
     builder.Services.AddScoped<ICategoryService, CategoryService>();
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<ICartService, CartService>();
 
     builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestDtoValidator>();
     builder.Services.AddValidatorsFromAssemblyContaining<CreateProductDtoValidator>();
+    builder.Services.AddValidatorsFromAssemblyContaining<AddToCartDtoValidator>();
 
     // OData configuration
     var modelBuilder = new ODataConventionModelBuilder();
