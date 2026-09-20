@@ -9,7 +9,7 @@ using TechStore.Application.Services;
 namespace TechStore.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Products")]
     public class ProductsController : ODataController
     {
         private readonly IProductService _productService;
