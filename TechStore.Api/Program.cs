@@ -12,6 +12,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
 using StackExchange.Redis;
+using MassTransit;
+using TechStore.Infrastructure.Consumers;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -108,6 +110,22 @@ try
     builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestDtoValidator>();
     builder.Services.AddValidatorsFromAssemblyContaining<CreateProductDtoValidator>();
     builder.Services.AddValidatorsFromAssemblyContaining<AddToCartDtoValidator>();
+
+    // MassTransit configuration
+    builder.Services.AddMassTransit(x =>
+    {
+        x.AddConsumer<OrderCreatedConsumer>();
+
+        x.UsingRabbitMq((context, cfg) =>
+        {
+            var rabbitConn = builder.Configuration.GetConnectionString("RabbitMQ") ?? "amqp://guest:guest@localhost:5672";
+            cfg.Host(rabbitConn);
+
+            cfg.ConfigureEndpoints(context);
+        });
+    });
+
+    builder.Services.AddScoped<IOrderService, OrderService>();
 
     // OData configuration
     var modelBuilder = new ODataConventionModelBuilder();

@@ -10,10 +10,7 @@ namespace TechStore.Domain.Enums
     {
         Pending,
         Processing,
-        Shipped,
-        Delivered,
-        Cancelled,
-        PaymentFailed,
-        Paid,
+        Completed,
+        Cancelled
     }
 }
