@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using FluentValidation;
 using TechStore.Application.DTOs;
 using TechStore.Application.Services;
@@ -9,8 +8,8 @@ using TechStore.Application.Services;
 namespace TechStore.Api.Controllers
 {
     [ApiController]
-    [Route("api/Categories")]
-    public class CategoriesController : ODataController
+    [Route("api/[controller]")]
+    public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
         private readonly IValidator<CreateCategoryDto> _createValidator;
@@ -27,12 +26,11 @@ namespace TechStore.Api.Controllers
         }
 
         [HttpGet]
-        [EnableQuery]
-        public ActionResult<IQueryable<CategoryDto>> Get()
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> Get()
         {
             try
             {
-                var categories = _categoryService.GetQueryable();
+                var categories = await _categoryService.GetAllAsync();
                 return Ok(categories);
             }
             catch (Exception)
@@ -41,8 +39,7 @@ namespace TechStore.Api.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        [EnableQuery]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<CategoryDto>> Get(Guid id)
         {
             try
@@ -81,7 +78,7 @@ namespace TechStore.Api.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<CategoryDto>> Update(Guid id, [FromBody] UpdateCategoryDto categoryDto)
         {
@@ -106,7 +103,7 @@ namespace TechStore.Api.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult> Delete(Guid id)
         {

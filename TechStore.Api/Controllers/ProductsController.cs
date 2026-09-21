@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using FluentValidation;
 using TechStore.Application.DTOs;
 using TechStore.Application.Services;
@@ -9,8 +7,8 @@ using TechStore.Application.Services;
 namespace TechStore.Api.Controllers
 {
     [ApiController]
-    [Route("api/Products")]
-    public class ProductsController : ODataController
+    [Route("api/[controller]")]
+    public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
         private readonly IValidator<CreateProductDto> _createValidator;
@@ -27,12 +25,11 @@ namespace TechStore.Api.Controllers
         }
 
         [HttpGet]
-        [EnableQuery]
-        public ActionResult<IQueryable<ProductResponseDto>> Get()
+        public async Task<ActionResult<IEnumerable<ProductResponseDto>>> Get()
         {
             try
             {
-                var products = _productService.GetQueryable();
+                var products = await _productService.GetAllAsync();
                 return Ok(products);
             }
             catch (Exception)
@@ -41,8 +38,7 @@ namespace TechStore.Api.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        [EnableQuery]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<ProductResponseDto>> Get(Guid id)
         {
             try
@@ -85,7 +81,7 @@ namespace TechStore.Api.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<ProductResponseDto>> Update(Guid id, [FromBody] UpdateProductDto productDto)
         {
@@ -110,7 +106,7 @@ namespace TechStore.Api.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult> Delete(Guid id)
         {

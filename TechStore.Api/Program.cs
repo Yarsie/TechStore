@@ -14,6 +14,8 @@ using Microsoft.OData.ModelBuilder;
 using StackExchange.Redis;
 using MassTransit;
 using TechStore.Infrastructure.Consumers;
+using Microsoft.OpenApi.Models;
+using TechStore.Api;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -38,6 +40,28 @@ try
             Title = "TechStore API",
             Version = "v1"
         });
+
+        c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+
+        // Hide OData metadata endpoints from Swagger
+        c.DocInclusionPredicate((docName, apiDesc) =>
+        {
+            // Exclude OData metadata endpoints
+            if (apiDesc.RelativePath != null && apiDesc.RelativePath.Contains("$metadata"))
+            {
+                return false;
+            }
+            // Exclude OData controllers from Swagger
+            if (apiDesc.RelativePath != null && 
+                (apiDesc.RelativePath.Contains("ODataProducts") || apiDesc.RelativePath.Contains("ODataCategories") || apiDesc.RelativePath.StartsWith("api/odata")))
+            {
+                return false;
+            }
+            return true;
+        });
+
+        // Remove OData content types from Swagger
+        c.OperationFilter<RemoveODataContentTypesOperationFilter>();
 
         c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
         {
@@ -129,8 +153,8 @@ try
 
     // OData configuration
     var modelBuilder = new ODataConventionModelBuilder();
-    modelBuilder.EntitySet<ProductResponseDto>("Products");
-    modelBuilder.EntitySet<CategoryDto>("Categories");
+    modelBuilder.EntitySet<ProductResponseDto>("ODataProducts");
+    modelBuilder.EntitySet<CategoryDto>("ODataCategories");
 
     builder.Services.AddControllers()
         .AddOData(options => options
@@ -141,7 +165,7 @@ try
             .Count()
             .Expand()
             .SetMaxTop(100)
-            .AddRouteComponents("api", modelBuilder.GetEdmModel()));
+            .AddRouteComponents("api/odata", modelBuilder.GetEdmModel()));
 
     var app = builder.Build();
 
@@ -158,7 +182,7 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
-
+    await DbInitializer.SeedAsync(app.Services);
     app.Run();
 }
 catch (Exception ex)
