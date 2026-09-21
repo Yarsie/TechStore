@@ -22,4 +22,10 @@
     <ProjectReference Include="..\TechStore.Application\TechStore.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Persistence\SeedData\products.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

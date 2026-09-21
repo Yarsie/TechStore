@@ -1,0 +1,110 @@
+[
+  {
+    "Name": "Lenovo Legion Pro 5 Laptop",
+    "Description": "High-performance gaming laptop designed for content creation, software development, and heavy gaming workloads.",
+    "Price": 1699.99,
+    "StockQuantity": 12,
+    "CategoryName": "Laptops",
+    "Specifications": {
+      "Processor": "AMD Ryzen 7 7745HX",
+      "RAM": "32GB DDR5 5200MHz",
+      "Storage": "1TB SSD NVMe M.2",
+      "GPU": "NVIDIA GeForce RTX 4070 8GB",
+      "Display": "16\" WQXGA IPS 240Hz"
+    }
+  },
+  {
+    "Name": "Apple MacBook Pro 16\" M3 Pro",
+    "Description": "Professional workstation laptop featuring extended battery life and a stunning Liquid Retina XDR display.",
+    "Price": 2499.00,
+    "StockQuantity": 7,
+    "CategoryName": "Laptops",
+    "Specifications": {
+      "Processor": "Apple M3 Pro (12 CPU / 18 GPU)",
+      "RAM": "36GB Unified Memory",
+      "Storage": "512GB SSD",
+      "Display": "16.2\" Liquid Retina XDR 120Hz"
+    }
+  },
+  {
+    "Name": "Google Pixel 8 Pro Smartphone",
+    "Description": "Flagship smartphone powered by Google AI features, advanced computational photography, and pure Android.",
+    "Price": 999.00,
+    "StockQuantity": 20,
+    "CategoryName": "Smartphones",
+    "Specifications": {
+      "Processor": "Google Tensor G3",
+      "RAM": "12GB",
+      "Storage": "256GB",
+      "Camera": "50MP + 48MP + 48MP",
+      "Battery": "5050 mAh"
+    }
+  },
+  {
+    "Name": "Samsung Galaxy S24 Ultra Smartphone",
+    "Description": "Titanium-built flagship smartphone featuring built-in S Pen stylus support and an anti-reflective display.",
+    "Price": 1299.99,
+    "StockQuantity": 15,
+    "CategoryName": "Smartphones",
+    "Specifications": {
+      "Processor": "Snapdragon 8 Gen 3 for Galaxy",
+      "RAM": "12GB",
+      "Storage": "512GB",
+      "Camera": "200MP + 50MP + 12MP + 10MP",
+      "Display": "6.8\" Dynamic AMOLED 2X 120Hz"
+    }
+  },
+  {
+    "Name": "Beyerdynamic DT 900 Pro X Studio Headphones",
+    "Description": "Open-back studio headphones engineered for critical listening, mixing, and precise acoustic monitoring.",
+    "Price": 269.00,
+    "StockQuantity": 9,
+    "CategoryName": "Audio",
+    "Specifications": {
+      "Type": "Open-back",
+      "Impedance": "48 Ohm",
+      "Driver": "STELLAR.45",
+      "FrequencyResponse": "5 - 40000 Hz",
+      "Connector": "Mini-XLR"
+    }
+  },
+  {
+    "Name": "Sony WH-1000XM5 Wireless Headphones",
+    "Description": "Premium over-ear wireless headphones with industry-leading active noise cancellation and high-resolution LDAC support.",
+    "Price": 399.99,
+    "StockQuantity": 18,
+    "CategoryName": "Audio",
+    "Specifications": {
+      "Type": "Closed-back",
+      "BatteryLife": "Up to 30 hours",
+      "NoiseCancelling": "Active (ANC)",
+      "Codec": "LDAC, AAC, SBC"
+    }
+  },
+  {
+    "Name": "Apple iPad Air 11\" M2 Tablet",
+    "Description": "Versatile tablet powered by the Apple M2 chip for digital illustration, productivity, and multimedia playback.",
+    "Price": 599.00,
+    "StockQuantity": 14,
+    "CategoryName": "Tablets",
+    "Specifications": {
+      "Processor": "Apple M2",
+      "RAM": "8GB",
+      "Storage": "128GB",
+      "Display": "11\" Liquid Retina IPS"
+    }
+  },
+  {
+    "Name": "Xiaomi Watch 2 Pro Smartwatch",
+    "Description": "Wear OS powered smartwatch featuring standalone eSIM connectivity, Google Pay, and comprehensive health sensors.",
+    "Price": 229.00,
+    "StockQuantity": 22,
+    "CategoryName": "Smartwatches",
+    "Specifications": {
+      "OS": "Wear OS by Google",
+      "Processor": "Snapdragon W5+ Gen 1",
+      "Display": "1.43\" AMOLED 466x466",
+      "Sensors": "Heart rate, SpO2, Bioelectrical impedance"
+    }
+  }
+]
