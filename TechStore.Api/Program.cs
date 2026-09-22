@@ -8,6 +8,7 @@ using TechStore.Application.Services;
 using TechStore.Infrastructure.Services;
 using TechStore.Application.Validators;
 using TechStore.Application.DTOs;
+using TechStore.Application.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
@@ -130,6 +131,12 @@ try
     builder.Services.AddScoped<ICategoryService, CategoryService>();
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<ICartService, CartService>();
+
+    builder.Services.AddHttpClient<IAiDescriptionService, AiDescriptionService>(client =>
+    {
+        client.BaseAddress = new Uri(builder.Configuration["AiSettings:BaseUrl"] ?? "http://localhost:11434");
+        client.Timeout = TimeSpan.FromMinutes(2);
+    });
 
     builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestDtoValidator>();
     builder.Services.AddValidatorsFromAssemblyContaining<CreateProductDtoValidator>();

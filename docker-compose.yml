@@ -35,8 +35,17 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: techstore_ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
 
 volumes:
   postgres_data:
   redis_data:
   rabbitmq_data:
+  ollama_data:
