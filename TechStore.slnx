@@ -3,4 +3,5 @@
   <Project Path="TechStore.Application/TechStore.Application.csproj" />
   <Project Path="TechStore.Domain/TechStore.Domain.csproj" />
   <Project Path="TechStore.Infrastructure/TechStore.Infrastructure.csproj" />
+  <Project Path="TechStore.Tests/TechStore.Tests.csproj" />
 </Solution>
